@@ -1,4 +1,5 @@
 class RedditsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @reddits = Reddit.all
   end
