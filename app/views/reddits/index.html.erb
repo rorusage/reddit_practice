@@ -3,7 +3,10 @@
     <h2><%= reddit.title %></h2>
     <br>
     <%= link_to("See link", reddit_path(reddit), class: "btn btn-info")%>
-    <%= link_to("Delete", reddit_path(reddit), class: "btn btn-danger",
-                 method: :delete, data: { confirm: "Are you sure?"})%>
+    <% if reddit.editable_by?(current_user)%>
+      <%= link_to("Edit", edit_reddit_path(reddit), class: "btn btn-default")%>
+      <%= link_to("Delete", reddit_path(reddit), class: "btn btn-danger",
+                  method: :delete, data: { confirm: "Are you sure?"})%>
+    <% end %>
   <% end %>
 </div>
