@@ -12,7 +12,7 @@ class RedditsController < ApplicationController
     @reddit = current_user.reddits.new(reddit_params)
 
     if @reddit.save
-      redirect_to reddits_path
+      redirect_to reddits_path, notice: "成功新增link"
     else
       render :new
     end
@@ -39,7 +39,7 @@ class RedditsController < ApplicationController
   def destroy
     @reddit = current_user.reddits.find(params[:id])
     @reddit.destroy
-    redirect_to reddits_path
+    redirect_to reddits_path, alert: "刪除link"
   end
 
   private
