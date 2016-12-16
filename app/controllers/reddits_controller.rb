@@ -9,7 +9,7 @@ class RedditsController < ApplicationController
   end
 
   def create
-    @reddit = Reddit.new(reddit_params)
+    @reddit = current_user.reddits.new(reddit_params)
 
     if @reddit.save
       redirect_to reddits_path
@@ -23,11 +23,11 @@ class RedditsController < ApplicationController
   end
 
   def edit
-    @reddit = Reddit.find(params[:id])
+    @reddit = current_user.reddits.find(params[:id])
   end
 
   def update
-    @reddit = Reddit.find(params[:id])
+    @reddit = current_user.reddits.find(params[:id])
 
     if @reddit.update(reddit_params)
       redirect_to reddits_path
@@ -37,7 +37,7 @@ class RedditsController < ApplicationController
   end
 
   def destroy
-    @reddit = Reddit.find(params[:id])
+    @reddit = current_user.reddits.find(params[:id])
     @reddit.destroy
     redirect_to reddits_path
   end
