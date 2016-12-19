@@ -8,4 +8,8 @@
   <hr>
 
   <a href="<%= @reddit.url%>" class: "btn btn-primary">Visit Now</a>
+  <%= link_to("Post comment", new_comment_path, class: "btn btn-info")%>
+  <% @comments.each do |comment| %>
+    <h2><%= comment %></h2>
+  <% end %>
 </div>

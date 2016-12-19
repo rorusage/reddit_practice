@@ -20,6 +20,7 @@ class RedditsController < ApplicationController
 
   def show
     @reddit = Reddit.find(params[:id])
+    @comments = @reddit.comments
   end
 
   def edit
