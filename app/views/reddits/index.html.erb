@@ -9,5 +9,9 @@
       <%= link_to("Delete", reddit_path(reddit), class: "btn btn-danger",
                   method: :delete, data: { confirm: "Are you sure?"})%>
     <% end %>
+    <%= link_to("Vote Up", vote_up_reddit_path(reddit), class: "btn btn-success")%>
+    <%= reddit.vote_up %>
+    <%= link_to("Vote Down", vote_down_reddit_path(reddit), class: "btn btn-warning")%>
+    <%= reddit. vote_down %>
   <% end %>
 </div>

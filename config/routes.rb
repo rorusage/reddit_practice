@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   devise_for :users
   root 'reddits#index'
   resources :reddits do
+    member do
+      get :vote_up
+      get :vote_down
+      post :vote_up
+      post :vote_down
+    end
     resources :comments
   end
   # The priority is based upon order of creation: first created -> highest priority.

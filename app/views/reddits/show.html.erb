@@ -9,6 +9,7 @@
 
   <a href="<%= @reddit.url%>" class: "btn btn-primary">Visit Now</a>
   <%= link_to("Post comment", new_reddit_comment_path(@reddit), class: "btn btn-info")%>
+  Vote Up : <%= @reddit.vote_up %>  Vote Down : <%= @reddit.vote_down %>
   <hr>
   <h3>comments:</h3>
   <% @comments.each do |comment| %>

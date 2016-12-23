@@ -7,4 +7,5 @@ class Reddit < ActiveRecord::Base
   def editable_by?(user)
     user == author
   end
+
 end

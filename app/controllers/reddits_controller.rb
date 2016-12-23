@@ -1,7 +1,7 @@
 class RedditsController < ApplicationController
   before_action :authenticate_user!
   def index
-    @reddits = Reddit.all
+    @reddits = Reddit.all.order("vote_up DESC")
   end
 
   def new
@@ -43,12 +43,32 @@ class RedditsController < ApplicationController
     redirect_to reddits_path, alert: "刪除link"
   end
 
+  def vote_up
+    @reddit = Reddit.find(params[:id])
+    @reddit.increment!(:vote_up)
+    new_vote_diff = find_vote_diff(@reddit)
+    @reddit.update_attribute(:vote_diff, new_vote_diff)
+    redirect_to reddits_path, notice: "vote up"
+  end
+
+  def vote_down
+    @reddit = Reddit.find(params[:id])
+    @reddit.increment!(:vote_down)
+    new_vote_diff = find_vote_diff(@reddit)
+    @reddit.update_attribute(:vote_diff, new_vote_diff)
+    redirect_to reddits_path, notice: "vote down"
+  end
+
   private
 
   def reddit_params
     params.require(:reddit).permit(:title, :url)
   end
 
-
+  def find_vote_diff(reddit_instance)
+    rvu = reddit_instance.vote_up
+    rvd = reddit_instance.vote_down
+    new_vote_diff = rvu - rvd
+  end
 
 end
