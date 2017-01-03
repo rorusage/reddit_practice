@@ -1,5 +1,5 @@
 class RedditsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:index]
   def index
     @reddits = Reddit.all.order("vote_diff DESC")
   end
