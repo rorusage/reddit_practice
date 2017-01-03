@@ -1,7 +1,7 @@
 <div class="col-md-12">
   <% @reddits.each do |reddit| %>
     <h2><%= reddit.title %></h2>
-    <h3>submit by <a href="#" data-toggle="tooltip" title="<%= current_user.email %>"><%= current_user.name %></a></h3>
+    <h3>submit by <a href="#" data-toggle="tooltip" title="<%= reddit.author.email %>"><%= reddit.author.name %></a></h3>
     <br>
     <%= link_to("See link", reddit_path(reddit), class: "btn btn-info")%>
     <% if reddit.editable_by?(current_user)%>
@@ -9,9 +9,9 @@
       <%= link_to("Delete", reddit_path(reddit), class: "btn btn-danger",
                   method: :delete, data: { confirm: "Are you sure?"})%>
     <% end %>
-    <%= link_to("Vote Up", vote_up_reddit_path(reddit), class: "btn btn-success")%>
-    <%= reddit.vote_up %>
-    <%= link_to("Vote Down", vote_down_reddit_path(reddit), class: "btn btn-warning")%>
-    <%= reddit. vote_down %>
+    <%= link_to("Up Vote ", vote_up_reddit_path(reddit), method: :post, class: "btn btn-success")%>
+    <%= reddit.get_up_votes %>
+    <%= link_to("Down Vote ", vote_down_reddit_path(reddit), method: :post, class: "btn btn-warning")%>
+    <%= reddit.get_down_votes %>
   <% end %>
 </div>

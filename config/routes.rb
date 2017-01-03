@@ -3,10 +3,10 @@ Rails.application.routes.draw do
   root 'reddits#index'
   resources :reddits do
     member do
-      get :vote_up
-      get :vote_down
       post :vote_up
       post :vote_down
+      get :vote_up
+      get :vote_down
     end
     resources :comments
   end

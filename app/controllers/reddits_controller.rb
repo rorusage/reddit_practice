@@ -1,7 +1,7 @@
 class RedditsController < ApplicationController
   before_action :authenticate_user!
   def index
-    @reddits = Reddit.all.order("vote_up DESC")
+    @reddits = Reddit.all.order("vote_diff DESC")
   end
 
   def new
@@ -45,18 +45,51 @@ class RedditsController < ApplicationController
 
   def vote_up
     @reddit = Reddit.find(params[:id])
-    @reddit.increment!(:vote_up)
-    new_vote_diff = find_vote_diff(@reddit)
-    @reddit.update_attribute(:vote_diff, new_vote_diff)
-    redirect_to reddits_path, notice: "vote up"
+
+    if current_user.has_voted_this_reddit?(@reddit)
+      result = current_user.votes.find_by_reddit_id(@reddit).vote_result
+      if result.eql?("vote_up")
+        current_user.cancel_vote!(@reddit)
+        @reddit.update_vote_diff
+        redirect_to reddits_path, alert: "Cancel voted up !"
+      else
+        redirect_to reddits_path, notice:  "You have to withdraw vote down, then vote it up !"
+      end
+    else
+      current_user.vote_up!(@reddit)
+      @reddit.update_vote_diff
+      redirect_to reddits_path, notice: "vote up !"
+    end
+
+    #@reddit = Reddit.find(params[:id])
+    #@reddit.increment!(:vote_up)
+    #new_vote_diff = find_vote_diff(@reddit)
+    #@reddit.update_attribute(:vote_diff, new_vote_diff)
+    #redirect_to reddits_path, notice: "vote up"
   end
 
   def vote_down
     @reddit = Reddit.find(params[:id])
-    @reddit.increment!(:vote_down)
-    new_vote_diff = find_vote_diff(@reddit)
-    @reddit.update_attribute(:vote_diff, new_vote_diff)
-    redirect_to reddits_path, notice: "vote down"
+
+    if current_user.has_voted_this_reddit?(@reddit)
+      result = current_user.votes.find_by_reddit_id(@reddit).vote_result
+      if result.eql?("vote_down")
+        current_user.cancel_vote!(@reddit)
+        @reddit.update_vote_diff
+        redirect_to reddits_path, alert:  "Cancel voted down !"
+      else
+        redirect_to reddits_path, notice:  "You have to withdraw vote up, then vote it down !"
+      end
+    else
+      current_user.vote_down!(@reddit)
+      @reddit.update_vote_diff
+      redirect_to reddits_path, notice: "vote down !"
+    end
+    #@reddit = Reddit.find(params[:id])
+    #@reddit.increment!(:vote_down)
+    #new_vote_diff = find_vote_diff(@reddit)
+    #@reddit.update_attribute(:vote_diff, new_vote_diff)
+    #redirect_to reddits_path, notice: "vote down"
   end
 
   private

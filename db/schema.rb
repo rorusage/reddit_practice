@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161222083259) do
+ActiveRecord::Schema.define(version: 20170103081536) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "content"
@@ -27,8 +27,6 @@ ActiveRecord::Schema.define(version: 20161222083259) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "user_id"
-    t.integer  "vote_up",    default: 0
-    t.integer  "vote_down",  default: 0
     t.integer  "vote_diff",  default: 0
   end
 
@@ -50,5 +48,13 @@ ActiveRecord::Schema.define(version: 20161222083259) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "votes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "reddit_id"
+    t.string   "vote_result"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
 end
